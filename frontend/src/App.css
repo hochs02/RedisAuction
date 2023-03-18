@@ -1,0 +1,29 @@
+@media only screen and (min-width:1000px){
+    .block2{
+        padding-top: 5%;
+    }
+}
+.block2{
+    font-size: 2vh;
+}
+.button{
+    color: ;
+}
+.logotext{
+    color: #2A5EDF;
+    font-size: 50px;
+    box-shadow: #2A5EDF;
+}
+.button{
+    color: white!important;
+    background-color: #2A5EDF!important;
+    border: none!important;
+  }
+.button:hover{
+transform: translate(0, -2px);
+-webkit-box-shadow: -1px 0px 12px 6px rgba(178,178,178,0.57)!important;
+box-shadow: -1px 0px 12px 6px rgba(178,178,178,0.57)!important;
+}
+.headline{
+    font-size: 25px;
+}
