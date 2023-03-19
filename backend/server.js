@@ -35,11 +35,13 @@ io.on('connection', (socket) => {
 const auctionData = require('./object');
 const key = String('auctionObject:' + auctionData.auctionObject.id);
 console.log(key);
-redisClient.zAdd(key,{ score: auctionData.auctionObject.starthöhe, value: "starthoehe"})
 
+let timeframe = false;
 let time = 60;
 let countdown = setInterval(update, 1000);
 function update() {
+
+    timeframe = true;
 
     let min = Math.floor(time / 60);
     let sec = time % 60;
@@ -53,6 +55,7 @@ function update() {
     if (min == 0 && sec == 0) {
         clearInterval(countdown);
         console.log("Countdown ist abgelaufen");
+        timeframe = false;
     };
 
 }
@@ -79,24 +82,12 @@ app.get('/auction', (req, res, next) => {
     }
 })
 
-app.post('/auction', (req, res, next) => {
-    //const time = require('./time');
-    const newAuctionObject = {
-        'id': req.body.id,
-        'name': req.body.name,
-        'starthöhe': req.body.starthöhe,
-        'intervall': req.body.intervall
-    }
-    console.log(newAuctionObject);
-    try{
-        auctionData.auctionObject = newAuctionObject;
-        res.status(200).send(auctionData.auctionObject);
-    } catch (e) {
-        res.status(400).send("Fehlermeldung");
-    }
-})
-
 app.get('/bids', async (req, res, next) => {
+    try {
+        redisClient.zAdd(key,{ score: auctionData.auctionObject.starthöhe, value: "starthoehe"})
+    } catch (e) {
+        console.log(e.message)
+    }
     try {
         const allBids = await redisClient.zRangeWithScores(key, 0, -1)
         res.status(200).send(allBids);
@@ -105,26 +96,62 @@ app.get('/bids', async (req, res, next) => {
     }
 })
 
-app.post('/bid', async (req, res, next) => {
-    const newBid = {
-        'nutzer': sessionID || req.body.nutzer, //req.body.nutzer wird aktuell nur für postman zum testen verwendet
-    }
-    console.log(newBid);
+app.get('/bids/highest', async (req, res, next) => {
     try {
         const allBids = await redisClient.zRangeWithScores(key, 0, -1)
-        const letztesGebot = Math.max(...allBids.map(o => o.score));
-        console.log("Letztes: " + letztesGebot)
-        const neuesGebot = letztesGebot + auctionData.auctionObject.intervall
-        console.log("Neues: " + neuesGebot)
-
-        await redisClient.zAdd(key, { score: neuesGebot, value: String(newBid.nutzer)});
-
         console.log(allBids)
-        res.status(200).send(allBids);
+        if (allBids.length !== 0) {
+            let max = allBids.reduce(function(prev, current) {
+                if (+current.score > +prev.score) {
+                    return current;
+                } else {
+                    return prev;
+                }
+            });
+            console.log(max)
+            res.status(200).send(max);
+        } else {
+            res.status(200).send({"value": "kein Gebot", "score": 0});
+        }
+
     } catch (e) {
-        console.log(e.message)
+        res.status(400).send("Fehlermeldung: " + e.message);
+    }
+})
+
+app.post('/bid', async (req, res, next) => {
+    if (timeframe === false) {
+        res.status(400).send("Countdown ist abgelaufen")
+    } else {
+        const newBid = {
+            'nutzer': sessionID || req.body.nutzer, //req.body.nutzer wird aktuell nur für postman zum testen verwendet
+        }
+        console.log(newBid);
+        try {
+            const allBids = await redisClient.zRangeWithScores(key, 0, -1)
+            const letztesGebot = Math.max(...allBids.map(o => o.score));
+            console.log("Letztes: " + letztesGebot)
+            const neuesGebot = letztesGebot + auctionData.auctionObject.intervall
+            console.log("Neues: " + neuesGebot)
+
+            await redisClient.zAdd(key, { score: neuesGebot, value: String(newBid.nutzer)});
+
+            res.sendStatus(200);
+        } catch (e) {
+            console.log(e.message)
+        }
     }
 
+})
+
+app.delete('/reset', async (req, res, next) => {
+    try {
+        await redisClient.del(key);
+        res.status(200).send("Daten zurückgesetzt");
+    } catch (e) {
+        console.log(e.message);
+        res.status(400).send("Folgender Fehler ist unterlaufen: " + e.message)
+    }
 })
 
 

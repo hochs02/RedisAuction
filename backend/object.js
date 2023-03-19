@@ -1,7 +1,7 @@
 const auctionObject = {
     'id': 1,
     'name': "Ming-Vase",
-    'kurzbeschreibung': "schon sehr alt",
+    'kurzbeschreibung': "schon sehr alt und hier kommt noch ein längerer Text dass es für Lukas schön aussieht",
     'zustand': "gut gebraucht mit 160 000km",
     'herstellungsjahr': "600",
     'bemessung': "30cm * 50cm * 30cm",
