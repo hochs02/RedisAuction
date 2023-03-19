@@ -22,44 +22,44 @@ const auctionData = require('./object');
 const key = String('auctionObject:' + auctionData.auctionObject.id);
 console.log(key);
 
+/*Start Countdown*/
 let timeframe = false;
-let time = 60000;
+let time = 6000;
+
+let countdown = setInterval(update, 1000);
+function update() {
+
+    timeframe = true;
+
+    let min = Math.floor(time / 60);
+    let sec = time % 60;
+
+    sec = sec < 10 ? "0" + sec : sec;
+
+    //console.log(`${min}:${sec}`);
+    auctionData.auctionObject.auktionszeit = `${min}:${sec}`;
+
+
+    time--;
+    if (min == 0 && sec == 0) {
+        clearInterval(countdown);
+        auctionData.auctionObject.auktionszeit = "Countdown ist abgelaufen";
+        console.log("Countdown ist abgelaufen");
+        timeframe = false;
+    };
+
+}
+/*Ende Countdown*/
 
 
 io.on('connection', (socket) => {
     console.log("Connected", socket.id);
     sessionID = socket.id;
 
-    /*Start Countdown*/
-    let countdown = setInterval(update, 1000);
-    function update() {
 
-        timeframe = true;
-
-        let min = Math.floor(time / 60);
-        let sec = time % 60;
-
-        sec = sec < 10 ? "0" + sec : sec;
-
-        //console.log(`${min}:${sec}`);
-        auctionData.auctionObject.auktionszeit = `${min}:${sec}`;
-        io.emit("time-did-change", auctionData.auctionObject)
-
-        time--;
-        if (min == 0 && sec == 0) {
-            clearInterval(countdown);
-            auctionData.auctionObject.auktionszeit = "Countdown ist abgelaufen";
-            console.log("Countdown ist abgelaufen");
-            io.emit("time-did-change", auctionData.auctionObject)
-            timeframe = false;
-        };
-
-    }
-    /*Ende Countdown*/
-
-    socket.on('bid-change', async () => {
-
-    })
+    setInterval(function() {
+        io.sockets.emit('time-did-change', auctionData.auctionObject);
+    }, 500);
 
     socket.on('bid-change', async () => {
         /*Start Post Bid*/
@@ -67,7 +67,7 @@ io.on('connection', (socket) => {
             console.log("Countdown ist abgelaufen")
         } else {
             const newBid = {
-                'nutzer': "SessionID"
+                'nutzer': sessionID
             }
             console.log(newBid);
             try {
@@ -79,7 +79,9 @@ io.on('connection', (socket) => {
 
                 await redisClient.zAdd(key, { score: neuesGebot, value: String(newBid.nutzer)});
                 const newBids = await redisClient.zRangeWithScores(key, 0, -1)
-                io.emit('bid-did-change', newBids)
+                let sortedBids = newBids.sort(({score:a}, {score:b}) => b-a)
+                console.log(sortedBids)
+                io.emit('bid-did-change', sortedBids)
                 console.log("Great Success")
             } catch (e) {
                 console.log(e.message)
