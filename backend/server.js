@@ -22,12 +22,14 @@ io.on('connection', (socket) => {
     console.log("Connected", socket.id);
     sessionID = socket.id;
 
+    socket.emit('bid-did-change', allBids);
+
     socket.on('bid-change', async (data) => {
         if (timeframe === false) {
             console.log("Countdown ist abgelaufen")
         } else {
             const newBid = {
-                'nutzer': sessionID || req.body.nutzer, //req.body.nutzer wird aktuell nur für postman zum testen verwendet
+                'nutzer': sessionID, //req.body.nutzer wird aktuell nur für postman zum testen verwendet
             }
             console.log(newBid);
             try {
@@ -44,7 +46,7 @@ io.on('connection', (socket) => {
                 console.log(e.message)
             }
         }
-        io.emit('bid-did-change', data);
+        io.emit('bid-did-change', allBids);
     })
 
     socket.on('disconnect', () => {
