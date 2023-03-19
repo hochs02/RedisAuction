@@ -2,8 +2,7 @@
     width: auto;
     max-height: 600px;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 40%;
     border-radius: 0.9%;
     -webkit-box-shadow: -1px 0px 12px 6px rgba(178,178,178,0.57)!important;
     box-shadow: -1px 0px 12px 6px rgba(178,178,178,0.57)!important; 
@@ -13,5 +12,7 @@
    .image{
     width: auto;
     max-height: 350px;
+    margin-left: auto!important;
+    margin-right: auto!important;
    }
 };

@@ -3,34 +3,61 @@ html,body,header.view{
     overflow-x: hidden;
 }
 
-@media only screen and (max-width:992px){
+@media only screen and (max-width:1200px){
     .block{
-        padding-top: 5%;
         font-size: 1vh;
+        margin-left: auto!important;
+        margin-right: auto!important;
     }
     .headline{
         font-size: 20px!important;
     }
+    .description{
+        font-size: 16px!important;
+    }
+    .rechtliches{
+        font-size: 12px!important;
+    }
+    .button1{
+        font-size: 16px!important;
+    }
 }
 .block{
     font-size: 2vh;
-    width: 35%!important;
+    max-height: 450px;
+    width: 500px!important;
+    margin-left: 5%;
+    border-radius: 25px;
+    background-color: #e6e6e6de;
+    padding-left: 3%!important;
+    padding-right: 2.5%!important;
+    overflow: auto;
+    display: grid!important;
+}
+.block-verlauf{
+    max-height: 300px;
+    width: 700px!important;
     margin-left: auto;
     margin-right: auto;
     border-radius: 25px;
     background-color: #e6e6e6de;
     padding-left: 3%!important;
+    padding-right: 2.5%!important;
+    overflow: auto;
+    overflow-x: 30px;
+    display: grid!important;
 }
 .button1{
     color: white!important;
     background-color: #2A5EDF!important;
     border: none!important;
     font-size: 20px!important;
+    border-radius: 20px!important;
   }
 .button1:hover{
-    transform: translate(0, -2px);
-    -webkit-box-shadow: -1px 0px 12px 6px rgba(178,178,178,0.57)!important;
-    box-shadow: -1px 0px 12px 6px rgba(178,178,178,0.57)!important;
+    transform: translate(0, -3px);
+    -webkit-box-shadow: -1px 0px 12px 6px rgba(158, 158, 158, 0.57)!important;
+    box-shadow: -1px 0px 12px 6px rgba(158, 158, 158, 0.57)!important;
 }
 .headline{
     font-size: 25px;
@@ -39,4 +66,19 @@ html,body,header.view{
 .description{
     font-weight: 600;
     line-height: 45px;
+}
+@media only screen and (max-width: 992px) {
+    
+}
+.rechtliches{
+    font-size: 14px;
+}
+::-webkit-scrollbar {
+    width: 14px;
+} 
+::-webkit-scrollbar-thumb {
+border: 40px solid rgba(0, 0, 0, 0);
+background-clip: padding-box;
+border-radius: 9999px;
+background-color: #AAAAAA;
 }

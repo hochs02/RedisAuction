@@ -37,7 +37,7 @@ const key = String('auctionObject:' + auctionData.auctionObject.id);
 console.log(key);
 
 let timeframe = false;
-let time = 60;
+let time = 600;
 let countdown = setInterval(update, 1000);
 function update() {
 
