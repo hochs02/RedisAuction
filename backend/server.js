@@ -24,33 +24,42 @@ console.log(key);
 
 let timeframe = false;
 let time = 60000;
-let countdown = setInterval(update, 1000);
-function update() {
 
-    timeframe = true;
-
-    let min = Math.floor(time / 60);
-    let sec = time % 60;
-
-    sec = sec < 10 ? "0" + sec : sec;
-
-    //console.log(`${min}:${sec}`);
-    auctionData.auctionObject.auktionszeit = `${min}:${sec}`;
-
-    time--;
-    if (min == 0 && sec == 0) {
-        clearInterval(countdown);
-        console.log("Countdown ist abgelaufen");
-        timeframe = false;
-    };
-
-}
 
 io.on('connection', (socket) => {
     console.log("Connected", socket.id);
     sessionID = socket.id;
 
+    /*Start Countdown*/
+    let countdown = setInterval(update, 1000);
+    function update() {
 
+        timeframe = true;
+
+        let min = Math.floor(time / 60);
+        let sec = time % 60;
+
+        sec = sec < 10 ? "0" + sec : sec;
+
+        //console.log(`${min}:${sec}`);
+        auctionData.auctionObject.auktionszeit = `${min}:${sec}`;
+        io.emit("time-did-change", auctionData.auctionObject)
+
+        time--;
+        if (min == 0 && sec == 0) {
+            clearInterval(countdown);
+            auctionData.auctionObject.auktionszeit = "Countdown ist abgelaufen";
+            console.log("Countdown ist abgelaufen");
+            io.emit("time-did-change", auctionData.auctionObject)
+            timeframe = false;
+        };
+
+    }
+    /*Ende Countdown*/
+
+    socket.on('bid-change', async () => {
+
+    })
 
     socket.on('bid-change', async () => {
         /*Start Post Bid*/
@@ -58,7 +67,7 @@ io.on('connection', (socket) => {
             console.log("Countdown ist abgelaufen")
         } else {
             const newBid = {
-                'nutzer': "data.nutzer" //req.body.nutzer wird aktuell nur für postman zum testen verwendet
+                'nutzer': SessionID
             }
             console.log(newBid);
             try {
