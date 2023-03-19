@@ -144,7 +144,7 @@ app.get('/bids', async (req, res, next) => {
     }
 })
 
-/*app.get('/bids/highest', async (req, res, next) => {
+app.get('/bids/highest', async (req, res, next) => {
     try {
         const allBids = await redisClient.zRangeWithScores(key, 0, -1)
         console.log(allBids)
@@ -165,7 +165,7 @@ app.get('/bids', async (req, res, next) => {
     } catch (e) {
         res.status(400).send("Fehlermeldung: " + e.message);
     }
-})*/
+})
 
 /*app.post('/bid', async (req, res, next) => {
     if (timeframe === false) {

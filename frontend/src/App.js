@@ -16,7 +16,6 @@ export default function App() {
   const [objects, setObjects] = useState([]);
   const [bids, setBids] = useState([]);
   const [bidhighest, setBidHighest] = useState([]);
-  const [bidChanged, setBidChanged] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -75,6 +74,9 @@ export default function App() {
     socket.on("bid-did-change", (data) => {
       setBids(data)
     });
+    socket.on("highest-bid-did-change", (data) =>{
+      setBidHighest(data)
+    })
   }, [socket]);
 
   
