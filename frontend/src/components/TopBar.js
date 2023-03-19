@@ -8,7 +8,7 @@ export default function TopBar(){
     return(
         <div>
             <div className="topbar ps-5">
-                <span className="logotext"><img className="pe-5" alt="Logo der Webseite" src={Logo}/>Zum Höchstpreis erworben</span>
+                <span className="logotext"><img className="logoimage pe-5" alt="Logo der Webseite" src={Logo}/>Zum Höchstpreis erworben</span>
             </div>
             <div className="pb-5"></div>
         </div>

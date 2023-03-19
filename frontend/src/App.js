@@ -19,11 +19,11 @@ export default class App extends React.Component {
         objects: [],
     };
 
-      this.BidObject = this.BidObject.bind(this);
+      this.ObjectGet = this.ObjectGet.bind(this);
     }
 
     async componentDidMount() {
-      await this.BidObject();
+      await this.ObjectGet();
     }
     async handleError() {
       this.setState({popuperror: true});
@@ -35,35 +35,11 @@ export default class App extends React.Component {
       this.setState({popup: false, popuperror: false});
     }
 
-    async BidObject() {
-      try {
-        const result = await fetch("http://localhost:6666/bid", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({ 
-            "nutzer" : document.getElementById("shortHand").value,
-            "betrag": document.getElementById("type").value,
-          }),
-      });
-     console.log(result);
-          if (result.status === 200) {
-              console.log("erfolgreich")
-          } else {
-              throw Error("Interner Server Fehler.");
-          }
-      } catch (error) {
-          console.log(error);
-          this.setState({error});
-      }
-      this.setState({isLoading: false});
-      }
+   
     
       async ObjectGet() {
         try {
-            const result = await fetch('http://localhost:6666/auction');
+            const result = await fetch('http://localhost:1234/auction');
             if (result.status === 200) {
                 const objects = await result.json();
                 console.log(objects);
@@ -91,24 +67,25 @@ export default class App extends React.Component {
         <div className="App">
           <TopBar/>
           <ImageComponent/>
+          <div className='pt-5'></div>
             <Row>
-              <Col className="pt-5 ps-5 border border-2" lg={6} sm={12}>
+            
+              <Col className="pt-5 pb-5 block" lg={6} sm={12}>
                 <p className="headline">Was wird versteigert:</p>
-                {objects.map((object) => (
-                  <div>
-                    Objektart: {object.name}<br/>
-                    Qualifikation: {object.starthöhe}<br/>
+                  <div className='description'>
+                    Objektart: {objects.name} <br/>
+                    Qualifikation: <br/>
                     Kurzbeschreibung: <br/>
                     Zustand: <br/>
                     Mindestpreis: <br/>
                   </div>
-                  
-                ))}
               </Col>
-              <Col className="pt-5 ps-5 border border-2 block2" lg={6} sm={12}>
-              <p className="headline">AKTUELLES GEBOT</p>
-              <Button className="button">Jetzt 100 € bieten</Button><br/>
-              <p className="pt-2">Restzeit: 10:00:00</p>
+            
+              <Col className="pt-5 pb-5 block" lg={6} sm={12}>
+                <p className="headline">AKTUELLES GEBOT</p>
+                <Button className="button1">Jetzt 100 € bieten</Button><br/>
+                <p className="pt-4 description">Restzeit: 10:00:00</p>
+                <p className='description'>Aktueller Meistbietender: </p>
               </Col>
             </Row>
           <FooterComponent/>

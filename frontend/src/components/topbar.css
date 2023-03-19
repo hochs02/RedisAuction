@@ -1,16 +1,28 @@
 .topbar{
-    font-size: 30px;
-    color: white;
     background-color: white;
-    padding-top: 2%;
-    padding-bottom: 2%;
+    padding-top: 1%;
+    padding-bottom: 1%;
     -webkit-box-shadow: 0px 8px 20px -1px rgba(158,158,158,0.99);
     -moz-box-shadow: 0px 8px 20px -1px rgba(158,158,158,0.99);
     box-shadow: 0px 8px 20px -1px rgba(158,158,158,0.99);
 }
+.logotext{
+    color: #2A5EDF;
+    font-size: 30px;
+    box-shadow: #2A5EDF;
+    font-family: Tahoma, sans-serif;
+    text-shadow: 2px 3px lightgrey;
+}
+.logoimage{
+    max-height: 80px;
+}
 @media only screen and (max-width: 1000px)
 { 
-   .topbar{
-    font-size: 20px
+   .logotext{
+    font-size: 20px;
+    text-shadow: 1px 2px lightgrey;
+   }
+   .logoimage{
+    max-height: 60px
    }
 };

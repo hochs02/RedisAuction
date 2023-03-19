@@ -1,29 +1,42 @@
-@media only screen and (min-width:1000px){
-    .block2{
+html,body,header.view{
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+@media only screen and (max-width:992px){
+    .block{
         padding-top: 5%;
+        font-size: 1vh;
+    }
+    .headline{
+        font-size: 20px!important;
     }
 }
-.block2{
+.block{
     font-size: 2vh;
+    width: 35%!important;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 25px;
+    background-color: #e6e6e6de;
+    padding-left: 3%!important;
 }
-.button{
-    color: ;
-}
-.logotext{
-    color: #2A5EDF;
-    font-size: 50px;
-    box-shadow: #2A5EDF;
-}
-.button{
+.button1{
     color: white!important;
     background-color: #2A5EDF!important;
     border: none!important;
+    font-size: 20px!important;
   }
-.button:hover{
-transform: translate(0, -2px);
--webkit-box-shadow: -1px 0px 12px 6px rgba(178,178,178,0.57)!important;
-box-shadow: -1px 0px 12px 6px rgba(178,178,178,0.57)!important;
+.button1:hover{
+    transform: translate(0, -2px);
+    -webkit-box-shadow: -1px 0px 12px 6px rgba(178,178,178,0.57)!important;
+    box-shadow: -1px 0px 12px 6px rgba(178,178,178,0.57)!important;
 }
 .headline{
     font-size: 25px;
+    font-weight: 500;
+}
+.description{
+    font-weight: 600;
+    line-height: 45px;
 }

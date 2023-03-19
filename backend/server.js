@@ -128,8 +128,8 @@ app.post('/bid', async (req, res, next) => {
 
 
 
-http.listen(6666, () => {
-    console.log("Running on Port 6666");
+http.listen(1234, () => {
+    console.log("Running on Port 1234");
 });
 
 function resolveNotFound(res, message) {

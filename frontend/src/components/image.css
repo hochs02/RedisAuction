@@ -1,14 +1,17 @@
 .image{
-    width: 60%;
-    margin-left: 20%;
-    margin-right: 20%;
+    width: auto;
+    max-height: 600px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 0.9%;
+    -webkit-box-shadow: -1px 0px 12px 6px rgba(178,178,178,0.57)!important;
+    box-shadow: -1px 0px 12px 6px rgba(178,178,178,0.57)!important; 
 }
 @media only screen and (max-width: 1000px)
 { 
    .image{
-    width: 90%;
-    margin-left: 5%;
-    margin-right: 5%;
+    width: auto;
+    max-height: 350px;
    }
 };
