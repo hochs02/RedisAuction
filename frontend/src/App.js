@@ -124,13 +124,13 @@ export default function App() {
             <Col lg={6} sm={12}>
               <ImageComponent/>
             </Col>
-            <Col className="pt-4 pb-5 block" xl={12} >
+            <Col className="pt-4 pb-3 block" xl={12} >
               <p className="headline">Was wird versteigert:</p>
                 <div className='description'>
                   Objektart: <div className='innertext'>{objects.name}</div> <br/>
                   Beschreibung: <div className='innertext'>{objects.kurzbeschreibung}</div> <br/>
                   Zustand: <div className='innertext'>{objects.zustand}</div> <br/>
-                  Herstellungsjahr: <div className='innertext'>{objects.herstellungsjahr} a.d</div> <br/>
+                  Herstellungsjahr: <div className='innertext'>{objects.herstellungsjahr}</div> <br/>
                   Bemessung: <div className='innertext'>{objects.bemessung}</div>
                 </div>
             </Col>
@@ -140,7 +140,7 @@ export default function App() {
               <Col className="pt-4 pb-3 block-verlauf" xl={12} >
                 <div className="bieten">
                     <p className="headline">AKTUELLES GEBOT: {bidhighest.score} €</p>
-                  <Button  onClick={BidObject} id="Button" name="Button" className="button1">Jetzt {bidhighest.score + 500} € bieten</Button><br/>
+                  <Button  onClick={BidObject} id="Button" name="Button" className="button1">Jetzt {bidhighest.score + objects.intervall} € bieten</Button><br/>
                   <div className="description">
                     Restzeit: <div className='innertext'>{objects.auktionszeit}</div> <br/>
                     Starthöhe: <div className='innertext'>{objects.starthöhe} €</div> <br/>

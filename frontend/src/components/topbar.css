@@ -2,16 +2,15 @@
     background-color: white;
     padding-top: 1%;
     padding-bottom: 1%;
-    -webkit-box-shadow: 0px 8px 20px -1px rgba(158,158,158,0.99);
-    -moz-box-shadow: 0px 8px 20px -1px rgba(158,158,158,0.99);
-    box-shadow: 0px 8px 20px -1px rgba(158,158,158,0.99);
+    -webkit-box-shadow: -1px 0px 12px 6px rgba(178,178,178,0.57)!important;
+    box-shadow: -1px 0px 12px 6px rgba(178,178,178,0.57)!important; 
 }
 .logotext{
     color: #2A5EDF;
     font-size: 30px;
     box-shadow: #2A5EDF;
     font-family: Tahoma, sans-serif;
-    text-shadow: 2px 3px lightgrey;
+    text-shadow: 2px 2px lightgrey;
 }
 .logoimage{
     max-height: 80px;
@@ -20,7 +19,7 @@
 { 
    .logotext{
     font-size: 20px;
-    text-shadow: 1px 2px lightgrey;
+    text-shadow: 1px 1px lightgrey;
    }
    .logoimage{
     max-height: 60px
