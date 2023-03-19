@@ -23,7 +23,7 @@ const key = String('auctionObject:' + auctionData.auctionObject.id);
 console.log(key);
 
 let timeframe = false;
-let time = 600;
+let time = 60000;
 let countdown = setInterval(update, 1000);
 function update() {
 
@@ -68,13 +68,14 @@ io.on('connection', (socket) => {
                 console.log("Neues: " + neuesGebot)
 
                 await redisClient.zAdd(key, { score: neuesGebot, value: String(newBid.nutzer)});
-
+                const newBids = await redisClient.zRangeWithScores(key, 0, -1)
+                io.emit('bid-did-change', newBids)
                 console.log("Great Success")
             } catch (e) {
                 console.log(e.message)
             }
         }
-
+     
     })
 
     socket.on('disconnect', () => {
@@ -141,7 +142,7 @@ app.get('/bids/highest', async (req, res, next) => {
     }
 })
 
-app.post('/bid', async (req, res, next) => {
+/*app.post('/bid', async (req, res, next) => {
     if (timeframe === false) {
         res.status(400).send("Countdown ist abgelaufen")
     } else {
@@ -164,7 +165,7 @@ app.post('/bid', async (req, res, next) => {
         }
     }
 
-})
+})*/
 
 app.delete('/reset', async (req, res, next) => {
     try {

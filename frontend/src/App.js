@@ -13,11 +13,10 @@ const socket = io.connect('http://localhost:1234');
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [popup, setPopup] = useState(false);
-  const [popupError, setPopupError] = useState(false);
   const [objects, setObjects] = useState([]);
   const [bids, setBids] = useState([]);
   const [bidhighest, setBidHighest] = useState([]);
+  const [bidChanged, setBidChanged] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -72,29 +71,19 @@ export default function App() {
     fetchData();
   }, []);
 
-  function updateBids(data) {
-    setBids(prevBids => [...prevBids, data]);
-  }
+  useEffect(() => {
+    socket.on("bid-did-change", (data) => {
+      setBids(data)
+    });
+  }, [socket]);
 
-  function handleBidChange() {
-    const bid = document.querySelector('input').value;
-    socket.emit('bid-did-change', bid);
-  }
+  
+    const BidObject = () =>{
+      
+    socket.emit('bid-change');};
+  
 
-  function handlePopup() {
-    setPopup(true);
-  }
-
-  function handleError() {
-    setPopupError(true);
-  }
-
-  function handleClosePopup() {
-    setPopup(false);
-    setPopupError(false);
-  }
-
-  async function handleBidObject() {
+  async function hanBidObject() {
     try {
       const result = await fetch("http://localhost:1234/bid", {
         method: "POST",
@@ -146,7 +135,7 @@ export default function App() {
               <Col className="pt-4 pb-3 block-verlauf" xl={12} >
                 <div className="bieten">
                     <p className="headline">AKTUELLES GEBOT: {bidhighest.score} €</p>
-                  <Button  onClick={() => this.BidObject()} id="Button" name="Button" className="button1">Jetzt {bidhighest.score + 500} € bieten</Button><br/>
+                  <Button  onClick={BidObject} id="Button" name="Button" className="button1">Jetzt {bidhighest.score + 500} € bieten</Button><br/>
                   <div className="description">
                     Restzeit: {objects.auktionszeit} <br/>
                     Starthöhe: {objects.starthöhe} € <br/>
@@ -166,7 +155,7 @@ export default function App() {
                       {bid.value} bietet {bid.score} €
                       <div className="border border-1 border-secondary"></div>
                     </div>
-                  ))}
+                  ))} 
                 </div>
               </Col>
             </Row>
