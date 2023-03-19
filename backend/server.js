@@ -16,8 +16,6 @@ let redisClient = redis.createClient({
 })
 redisClient.connect();
 
-let sessionID;
-
 const auctionData = require('./object');
 const key = String('auctionObject:' + auctionData.auctionObject.id);
 console.log(key);
@@ -54,7 +52,6 @@ function update() {
 
 io.on('connection', (socket) => {
     console.log("Connected", socket.id);
-    sessionID = socket.id;
 
 
     setInterval(function() {
@@ -67,7 +64,7 @@ io.on('connection', (socket) => {
             console.log("Countdown ist abgelaufen")
         } else {
             const newBid = {
-                'nutzer': sessionID
+                'nutzer': socket.id
             }
             console.log(newBid);
             try {
