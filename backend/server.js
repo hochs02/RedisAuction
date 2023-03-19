@@ -107,21 +107,22 @@ app.get('/bids', async (req, res, next) => {
 app.post('/bid', async (req, res, next) => {
     const newBid = {
         'nutzer': sessionID || req.body.nutzer, //req.body.nutzer wird aktuell nur für postman zum testen verwendet
-        'betrag': req.body.betrag
     }
     console.log(newBid);
-    const letztesGebot = Math.max(...auctionData.bids.map(o => o.betrag));
-    if (newBid.betrag > letztesGebot + auctionData.auctionObject.intervall) {
-        //try {
-            await redisClient.zAdd(key, { score: newBid.betrag, value: String(newBid.nutzer)});
-            //auctionData.bids.push(newBid);
-            const allBids = await redisClient.zRangeWithScores(key, 0, -1)
-            res.status(200).send(allBids);
-        /**} catch (e) {
-            res.status(400).send("Fehlermeldung: " + e.message);
-        }*/
-    } else {
-        res.status(404).send("Das Gebot war zu niedrig");
+    try {
+    const allBids = await redisClient.zRangeWithScores(key, 0, -1)
+    const letztesGebot = Math.max(...allBids.map(o => o.score));
+    console.log("Letztes: " + letztesGebot)
+    const neuesGebot = letztesGebot + auctionData.auctionObject.intervall
+    console.log("Neues: " + neuesGebot)
+
+
+        await redisClient.zAdd(key, { score: neuesGebot, value: String(newBid.nutzer)});
+
+        console.log(allBids)
+        res.status(200).send(allBids);
+    } catch (e) {
+        console.log(e.message)
     }
 
 })
