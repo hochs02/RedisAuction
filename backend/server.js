@@ -18,42 +18,6 @@ redisClient.connect();
 
 let sessionID;
 
-io.on('connection', (socket) => {
-    console.log("Connected", socket.id);
-    sessionID = socket.id;
-
-
-
-    socket.on('bid-change', async (data) => {
-        if (timeframe === false) {
-            console.log("Countdown ist abgelaufen")
-        } else {
-            const newBid = {
-                'nutzer': data.nutzer, //req.body.nutzer wird aktuell nur für postman zum testen verwendet
-            }
-            console.log(newBid);
-            try {
-                const allBids = await redisClient.zRangeWithScores(key, 0, -1)
-                const letztesGebot = Math.max(...allBids.map(o => o.score));
-                console.log("Letztes: " + letztesGebot)
-                const neuesGebot = letztesGebot + auctionData.auctionObject.intervall
-                console.log("Neues: " + neuesGebot)
-
-                await redisClient.zAdd(key, { score: neuesGebot, value: String(newBid.nutzer)});
-
-                console.log("Great Success")
-            } catch (e) {
-                console.log(e.message)
-            }
-        }
-        
-    })
-
-    socket.on('disconnect', () => {
-        console.log("Disconnected", socket.id);
-    });
-});
-
 const auctionData = require('./object');
 const key = String('auctionObject:' + auctionData.auctionObject.id);
 console.log(key);
@@ -81,6 +45,42 @@ function update() {
     };
 
 }
+
+io.on('connection', (socket) => {
+    console.log("Connected", socket.id);
+    sessionID = socket.id;
+
+
+
+    socket.on('bid-change', async () => {
+        if (timeframe === false) {
+            console.log("Countdown ist abgelaufen")
+        } else {
+            const newBid = {
+                'nutzer': "data.nutzer" //req.body.nutzer wird aktuell nur für postman zum testen verwendet
+            }
+            console.log(newBid);
+            try {
+                const allBids = await redisClient.zRangeWithScores(key, 0, -1)
+                const letztesGebot = Math.max(...allBids.map(o => o.score));
+                console.log("Letztes: " + letztesGebot)
+                const neuesGebot = letztesGebot + auctionData.auctionObject.intervall
+                console.log("Neues: " + neuesGebot)
+
+                await redisClient.zAdd(key, { score: neuesGebot, value: String(newBid.nutzer)});
+
+                console.log("Great Success")
+            } catch (e) {
+                console.log(e.message)
+            }
+        }
+
+    })
+
+    socket.on('disconnect', () => {
+        console.log("Disconnected", socket.id);
+    });
+});
 
 const logger = (req, res, next) => {
     console.log(`Received Request ${new Date(Date.now()).toLocaleString('de-DE')}`);
