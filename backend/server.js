@@ -35,6 +35,7 @@ io.on('connection', (socket) => {
 const auctionData = require('./object');
 const key = String('auctionObject:' + auctionData.auctionObject.id);
 console.log(key);
+redisClient.zAdd(key,{ score: auctionData.auctionObject.starthöhe, value: "starthoehe"})
 
 let time = 60;
 let countdown = setInterval(update, 1000);
@@ -110,12 +111,11 @@ app.post('/bid', async (req, res, next) => {
     }
     console.log(newBid);
     try {
-    const allBids = await redisClient.zRangeWithScores(key, 0, -1)
-    const letztesGebot = Math.max(...allBids.map(o => o.score));
-    console.log("Letztes: " + letztesGebot)
-    const neuesGebot = letztesGebot + auctionData.auctionObject.intervall
-    console.log("Neues: " + neuesGebot)
-
+        const allBids = await redisClient.zRangeWithScores(key, 0, -1)
+        const letztesGebot = Math.max(...allBids.map(o => o.score));
+        console.log("Letztes: " + letztesGebot)
+        const neuesGebot = letztesGebot + auctionData.auctionObject.intervall
+        console.log("Neues: " + neuesGebot)
 
         await redisClient.zAdd(key, { score: neuesGebot, value: String(newBid.nutzer)});
 
