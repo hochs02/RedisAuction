@@ -23,8 +23,28 @@ io.on('connection', (socket) => {
     sessionID = socket.id;
 
     socket.on('bid-change', async (data) => {
-        await redisClient.set('bids', JSON.stringify(data));
-        io.emit('todo-list-did-change', data);
+        if (timeframe === false) {
+            console.log("Countdown ist abgelaufen")
+        } else {
+            const newBid = {
+                'nutzer': sessionID || req.body.nutzer, //req.body.nutzer wird aktuell nur für postman zum testen verwendet
+            }
+            console.log(newBid);
+            try {
+                const allBids = await redisClient.zRangeWithScores(key, 0, -1)
+                const letztesGebot = Math.max(...allBids.map(o => o.score));
+                console.log("Letztes: " + letztesGebot)
+                const neuesGebot = letztesGebot + auctionData.auctionObject.intervall
+                console.log("Neues: " + neuesGebot)
+
+                await redisClient.zAdd(key, { score: neuesGebot, value: String(newBid.nutzer)});
+
+                console.log("Great Success")
+            } catch (e) {
+                console.log(e.message)
+            }
+        }
+        io.emit('bid-did-change', data);
     })
 
     socket.on('disconnect', () => {
