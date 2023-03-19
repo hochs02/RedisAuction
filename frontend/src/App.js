@@ -124,11 +124,11 @@ export default function App() {
             <Col className="pt-4 pb-5 block" xl={12} >
               <p className="headline">Was wird versteigert:</p>
                 <div className='description'>
-                  Objektart: "{objects.name}" <br/>
-                  Kurzbeschreibung: "{objects.kurzbeschreibung}" <br/>
-                  Zustand: "{objects.zustand}" <br/>
-                  Herstellungsjahr: {objects.herstellungsjahr} a.d <br/>
-                  Bemessung: {objects.bemessung}
+                  Objektart: <div className='innertext'>{objects.name}</div> <br/>
+                  Kurzbeschreibung: <div className='innertext'>{objects.kurzbeschreibung}</div> <br/>
+                  Zustand: <div className='innertext'>{objects.zustand}</div> <br/>
+                  Herstellungsjahr: <div className='innertext'>{objects.herstellungsjahr} a.d</div> <br/>
+                  Bemessung: <div className='innertext'>{objects.bemessung}</div>
                 </div>
             </Col>
           </Row> 
@@ -139,8 +139,8 @@ export default function App() {
                     <p className="headline">AKTUELLES GEBOT: {bidhighest.score} €</p>
                   <Button  onClick={BidObject} id="Button" name="Button" className="button1">Jetzt {bidhighest.score + 500} € bieten</Button><br/>
                   <div className="description">
-                    Restzeit: {objects.auktionszeit} <br/>
-                    Starthöhe: {objects.starthöhe} € <br/>
+                    Restzeit: <div className='innertext'>{objects.auktionszeit}</div> <br/>
+                    Starthöhe: <div className='innertext'>{objects.starthöhe} €</div> <br/>
                   </div>
                   <div className="rechtliches pt-2">
                     Rechtliche Hinweise: "Ihre Gebote bei dieser Auktion sind verbindlich und Sie sind rechtlich verpflichtet,

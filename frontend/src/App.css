@@ -21,6 +21,9 @@ html,body,header.view{
     .button1{
         font-size: 16px!important;
     }
+    .innertext{
+        font-size: 16px!important;
+    }
 }
 .block{
     font-size: 20px;
@@ -64,8 +67,8 @@ html,body,header.view{
     font-weight: 500;
 }
 .description{
-    font-weight: 600;
     line-height: 45px;
+    font-size: 20px;
 }
 @media only screen and (max-width: 992px) {
     
@@ -81,4 +84,9 @@ border: 40px solid rgba(0, 0, 0, 0);
 background-clip: padding-box;
 border-radius: 9999px;
 background-color: #AAAAAA;
+}
+.innertext{
+    font-weight: 700;
+    font-size: 20px;
+    display: inline-block!important;
 }
