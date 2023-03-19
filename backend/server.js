@@ -67,7 +67,7 @@ io.on('connection', (socket) => {
             console.log("Countdown ist abgelaufen")
         } else {
             const newBid = {
-                'nutzer': SessionID
+                'nutzer': "SessionID"
             }
             console.log(newBid);
             try {

@@ -77,6 +77,9 @@ export default function App() {
     socket.on("highest-bid-did-change", (data) =>{
       setBidHighest(data)
     })
+    socket.on("time-did-change", (data) => {
+      setObjects(data)
+    })
   }, [socket]);
 
   
@@ -125,7 +128,7 @@ export default function App() {
               <p className="headline">Was wird versteigert:</p>
                 <div className='description'>
                   Objektart: <div className='innertext'>{objects.name}</div> <br/>
-                  Kurzbeschreibung: <div className='innertext'>{objects.kurzbeschreibung}</div> <br/>
+                  Beschreibung: <div className='innertext'>{objects.kurzbeschreibung}</div> <br/>
                   Zustand: <div className='innertext'>{objects.zustand}</div> <br/>
                   Herstellungsjahr: <div className='innertext'>{objects.herstellungsjahr} a.d</div> <br/>
                   Bemessung: <div className='innertext'>{objects.bemessung}</div>
