@@ -53,6 +53,7 @@ io.on('connection', (socket) => {
 
 
     socket.on('bid-change', async () => {
+        /*Start Post Bid*/
         if (timeframe === false) {
             console.log("Countdown ist abgelaufen")
         } else {
@@ -75,7 +76,31 @@ io.on('connection', (socket) => {
                 console.log(e.message)
             }
         }
-     
+        /*Ende Post Bid*/
+
+        /*Start Get Highest Bid*/
+        try {
+            const allBids = await redisClient.zRangeWithScores(key, 0, -1)
+            if (allBids.length !== 0) {
+                let max = allBids.reduce(function(prev, current) {
+                    if (+current.score > +prev.score) {
+                        return current;
+                    } else {
+                        return prev;
+                    }
+                });
+                console.log(max)
+                io.emit('highest-bid-did-change', max)
+                //res.status(200).send(max);
+            } else {
+                io.emit('highest-bid-did-change', {"value": "kein Gebot", "score": 0})
+                //res.status(200).send({"value": "kein Gebot", "score": 0});
+            }
+
+        } catch (e) {
+            res.status(400).send("Fehlermeldung: " + e.message);
+        }
+        /*Ende Get Highest Bid*/
     })
 
     socket.on('disconnect', () => {
@@ -119,7 +144,7 @@ app.get('/bids', async (req, res, next) => {
     }
 })
 
-app.get('/bids/highest', async (req, res, next) => {
+/*app.get('/bids/highest', async (req, res, next) => {
     try {
         const allBids = await redisClient.zRangeWithScores(key, 0, -1)
         console.log(allBids)
@@ -140,7 +165,7 @@ app.get('/bids/highest', async (req, res, next) => {
     } catch (e) {
         res.status(400).send("Fehlermeldung: " + e.message);
     }
-})
+})*/
 
 /*app.post('/bid', async (req, res, next) => {
     if (timeframe === false) {
