@@ -22,7 +22,7 @@ console.log(key);
 
 /*Start Countdown*/
 let timeframe = false;
-let time = 6000;
+let time = 300;
 
 let countdown = setInterval(update, 1000);
 function update() {
