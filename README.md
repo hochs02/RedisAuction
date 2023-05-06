@@ -1,5 +1,8 @@
 # RedisAuction
 
+#Dokumentation
+Die Doku befindet sich als PDF im Repository
+
 #Installation
 
 -Docker muss installiert sein
